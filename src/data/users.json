@@ -10,5 +10,11 @@
         "username": "user",
         "password": "user123",
         "role": "user"
+    },
+    {
+        "id": 3,
+        "username": "madaihsan123@gmail.com",
+        "password": "madaihsan",
+        "role": "user"
     }
 ]
