@@ -47,91 +47,91 @@ const UserProfile = () => {
     return (
         <div>
             <NavbarUser />
-        <div className="p-6">
-            <h1 className="text-2xl font-bold mb-4">Profil Pengguna</h1>
-            {isEditing ? (
-                <div className="bg-white p-4 rounded shadow">
-                    <h2 className="text-xl font-semibold mb-2">Edit Profil</h2>
-                    <div className="space-y-4">
-                        <div>
-                            <label className="block text-gray-700">Nama:</label>
-                            <input
-                                type="text"
-                                name="name"
-                                value={formData.name}
-                                onChange={handleChange}
-                                className="w-full p-2 border rounded"
-                            />
+            <div className="max-w-4xl mx-auto p-6 bg-gray-50 rounded-lg shadow-md">
+                <h1 className="text-3xl font-semibold text-center mb-6">Profil Pengguna</h1>
+                {isEditing ? (
+                    <div className="bg-white p-6 rounded-lg shadow-lg space-y-6">
+                        <h2 className="text-2xl font-semibold">Edit Profil</h2>
+                        <div className="space-y-4">
+                            <div>
+                                <label className="block text-gray-700">Nama:</label>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                    className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-gray-700">Email:</label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-gray-700">Telepon:</label>
+                                <input
+                                    type="text"
+                                    name="phone"
+                                    value={formData.phone}
+                                    onChange={handleChange}
+                                    className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-gray-700">Alamat:</label>
+                                <textarea
+                                    name="address"
+                                    value={formData.address}
+                                    onChange={handleChange}
+                                    className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                ></textarea>
+                            </div>
                         </div>
-                        <div>
-                            <label className="block text-gray-700">Email:</label>
-                            <input
-                                type="email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                className="w-full p-2 border rounded"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-gray-700">Telepon:</label>
-                            <input
-                                type="text"
-                                name="phone"
-                                value={formData.phone}
-                                onChange={handleChange}
-                                className="w-full p-2 border rounded"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-gray-700">Alamat:</label>
-                            <textarea
-                                name="address"
-                                value={formData.address}
-                                onChange={handleChange}
-                                className="w-full p-2 border rounded"
-                            ></textarea>
+                        <div className="flex space-x-4 mt-6">
+                            <button
+                                onClick={handleSave}
+                                className="w-full sm:w-auto bg-blue-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600 transition duration-200"
+                            >
+                                Simpan
+                            </button>
+                            <button
+                                onClick={handleCancel}
+                                className="w-full sm:w-auto bg-gray-500 text-white py-3 px-6 rounded-lg hover:bg-gray-600 transition duration-200"
+                            >
+                                Batal
+                            </button>
                         </div>
                     </div>
-                    <div className="mt-4 flex space-x-2">
-                        <button
-                            onClick={handleSave}
-                            className="bg-blue-500 text-white px-4 py-2 rounded"
-                        >
-                            Simpan
-                        </button>
-                        <button
-                            onClick={handleCancel}
-                            className="bg-gray-500 text-white px-4 py-2 rounded"
-                        >
-                            Batal
-                        </button>
+                ) : (
+                    <div className="bg-white p-6 rounded-lg shadow-lg space-y-6">
+                        <h2 className="text-2xl font-semibold">Detail Profil</h2>
+                        <p><strong>Nama:</strong> {profile.name}</p>
+                        <p><strong>Email:</strong> {profile.email}</p>
+                        <p><strong>Telepon:</strong> {profile.phone}</p>
+                        <p><strong>Alamat:</strong> {profile.address}</p>
+                        <div className="flex space-x-4 mt-6">
+                            <button
+                                onClick={() => setIsEditing(true)}
+                                className="w-full sm:w-auto bg-green-500 text-white py-3 px-6 rounded-lg hover:bg-green-600 transition duration-200"
+                            >
+                                Edit
+                            </button>
+                            <button
+                                onClick={handleDelete}
+                                className="w-full sm:w-auto bg-red-500 text-white py-3 px-6 rounded-lg hover:bg-red-600 transition duration-200"
+                            >
+                                Hapus
+                            </button>
+                        </div>
                     </div>
-                </div>
-            ) : (
-                <div className="bg-white p-4 rounded shadow">
-                    <h2 className="text-xl font-semibold mb-2">Detail Profil</h2>
-                    <p><strong>Nama:</strong> {profile.name}</p>
-                    <p><strong>Email:</strong> {profile.email}</p>
-                    <p><strong>Telepon:</strong> {profile.phone}</p>
-                    <p><strong>Alamat:</strong> {profile.address}</p>
-                    <div className="mt-4 flex space-x-2">
-                        <button
-                            onClick={() => setIsEditing(true)}
-                            className="bg-green-500 text-white px-4 py-2 rounded"
-                        >
-                            Edit
-                        </button>
-                        <button
-                            onClick={handleDelete}
-                            className="bg-red-500 text-white px-4 py-2 rounded"
-                        >
-                            Hapus
-                        </button>
-                    </div>
-                </div>
-            )}
-        </div>
+                )}
+            </div>
         </div>
     );
 };

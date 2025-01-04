@@ -4,6 +4,8 @@ import NavbarAdmin from "./components/NavbarAdmin";
 import NavbarUser from "./components/NavbarUser";
 import Login from "./pages/Login";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminManageStudents from "./pages/AdminManageStudents"; 
+import AdminManageAttendance from "./pages/AdminManageAttendance"; 
 import UserHome from "./pages/UserHome";
 import UserProfile from "./pages/UserProfile";
 import Register from "./pages/Register/register";
@@ -11,36 +13,26 @@ import firebase from './config/firebase';
 
 console.log('config firebase ==> ', firebase);
 
-
-
-// const App = () => {
-//     const userRole = null; 
-
-//     return (
-//         <Router>
-//             {userRole === "admin" && <NavbarAdmin />}
-//             {userRole === "user" && <NavbarUser />}
-//             <Routes>
-//                 <Route path="/" element={<Register />} />
-//             </Routes>
-//         </Router>
-//     );
-// };
-
-// export default App;
-
-
 const App = () => {
-    const userRole = null; 
+    const userRole = "admin"; // Anda bisa mengubah ini sesuai dengan autentikasi yang digunakan
 
     return (
         <Router>
-            {userRole === "admin" && <NavbarAdmin />}
-            {userRole === "user" && <NavbarUser />}
             <Routes>
+                {/* Jika userRole adalah admin, navbar admin akan muncul */}
+                {userRole === "admin" && (
+                    <Route path="/*" element={<NavbarAdmin />} />
+                )}
+                {/* Jika userRole adalah user, navbar user akan muncul */}
+                {userRole === "user" && (
+                    <Route path="/*" element={<NavbarUser />} />
+                )}
+
                 <Route path="/" element={<Register />} />
                 <Route path="/Login" element={<Login />} />
                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                <Route path="/admin/manage-students" element={<AdminManageStudents />} />
+                <Route path="/admin/manage-attendance" element={<AdminManageAttendance />} />
                 <Route path="/home" element={<UserHome />} />
                 <Route path="/profile" element={<UserProfile />} />
             </Routes>
