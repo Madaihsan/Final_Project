@@ -1,41 +1,49 @@
 import React, { useState, useEffect } from "react";
 import NavbarAdmin from "../components/NavbarAdmin";
+import { db } from "../firebase"; // Pastikan kamu sudah mengonfigurasi Firebase dan export db
+import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from "firebase/firestore";
 
 const AdminManageStudents = () => {
-  // Memuat data siswa dari localStorage jika ada
-  const loadStudentsFromStorage = () => {
-    const studentsData = localStorage.getItem("students");
-    return studentsData ? JSON.parse(studentsData) : [];
-  };
-
-  // State untuk data siswa
-  const [students, setStudents] = useState(loadStudentsFromStorage);
-
-  // State untuk form input
+  const [students, setStudents] = useState([]);
   const [newStudent, setNewStudent] = useState({ name: "", age: "", class: "" });
   const [editStudent, setEditStudent] = useState(null);
-
-  // State untuk modal
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Menambahkan siswa baru
-  const handleAddStudent = () => {
-    const id = students.length ? students[students.length - 1].id + 1 : 1;
-    const updatedStudents = [...students, { id, ...newStudent }];
-    setStudents(updatedStudents);
-    localStorage.setItem("students", JSON.stringify(updatedStudents));
-    setNewStudent({ name: "", age: "", class: "" });
-    setIsModalOpen(false);
+  // Memuat data siswa dari Firestore
+  const loadStudents = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "students"));
+      const studentsList = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setStudents(studentsList);
+    } catch (error) {
+      console.error("Error getting students: ", error);
+    }
   };
 
-  // Menghapus siswa
-  const handleDeleteStudent = (id) => {
-    const updatedStudents = students.filter((student) => student.id !== id);
-    setStudents(updatedStudents);
-    localStorage.setItem("students", JSON.stringify(updatedStudents));
+  useEffect(() => {
+    loadStudents(); // Panggil loadStudents saat pertama kali komponen dimuat
+  }, []);
+
+  // Menambahkan siswa baru ke Firestore
+  const handleAddStudent = async () => {
+    try {
+      const docRef = await addDoc(collection(db, "students"), {
+        name: newStudent.name,
+        age: newStudent.age,
+        class: newStudent.class,
+      });
+      setStudents((prevStudents) => [
+        ...prevStudents,
+        { id: docRef.id, ...newStudent },
+      ]);
+      setNewStudent({ name: "", age: "", class: "" });
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error("Error adding student: ", error);
+    }
   };
 
-  // Memulai proses edit
+  // Mengedit siswa yang ada
   const handleEditStudent = (student) => {
     setEditStudent(student);
     setNewStudent({
@@ -43,19 +51,40 @@ const AdminManageStudents = () => {
       age: student.age,
       class: student.class,
     });
-    setIsModalOpen(true); // Membuka modal saat edit
+    setIsModalOpen(true);
   };
 
-  // Menyimpan perubahan siswa
-  const handleSaveEdit = () => {
-    const updatedStudents = students.map((student) =>
-      student.id === editStudent.id ? { ...student, ...newStudent } : student
-    );
-    setStudents(updatedStudents);
-    localStorage.setItem("students", JSON.stringify(updatedStudents));
-    setEditStudent(null);
-    setNewStudent({ name: "", age: "", class: "" });
-    setIsModalOpen(false); // Menutup modal setelah menyimpan
+  // Menyimpan perubahan edit siswa ke Firestore
+  const handleSaveEdit = async () => {
+    try {
+      const studentRef = doc(db, "students", editStudent.id);
+      await updateDoc(studentRef, {
+        name: newStudent.name,
+        age: newStudent.age,
+        class: newStudent.class,
+      });
+      setStudents((prevStudents) =>
+        prevStudents.map((student) =>
+          student.id === editStudent.id ? { ...student, ...newStudent } : student
+        )
+      );
+      setEditStudent(null);
+      setNewStudent({ name: "", age: "", class: "" });
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error("Error updating student: ", error);
+    }
+  };
+
+  // Menghapus siswa dari Firestore
+  const handleDeleteStudent = async (id) => {
+    try {
+      const studentRef = doc(db, "students", id);
+      await deleteDoc(studentRef);
+      setStudents((prevStudents) => prevStudents.filter((student) => student.id !== id));
+    } catch (error) {
+      console.error("Error deleting student: ", error);
+    }
   };
 
   // Validasi input nama hanya boleh huruf

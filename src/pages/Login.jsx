@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -66,6 +66,9 @@ const Login = () => {
           Login
         </button>
         {error && <p className="text-red-500 mt-2">{error}</p>}
+        <p className="text-sm text-center mt-4">
+          Don&#39;t have an account? <Link to="/" className="text-blue-500 hover:underline">Register</Link>
+        </p>
       </div>
     </div>
   );

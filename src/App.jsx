@@ -6,10 +6,11 @@ import Login from "./pages/Login";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminManageStudents from "./pages/AdminManageStudents"; 
 import AdminManageAttendance from "./pages/AdminManageAttendance"; 
+import AdminProfile from "./pages/AdminProfile"; 
 import UserHome from "./pages/UserHome";
 import UserProfile from "./pages/UserProfile";
 import Register from "./pages/Register/register";
-import firebase from './config/firebase';
+import firebase from './config/firebase/index';
 
 console.log('config firebase ==> ', firebase);
 
@@ -32,7 +33,8 @@ const App = () => {
                 <Route path="/Login" element={<Login />} />
                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
                 <Route path="/admin/manage-students" element={<AdminManageStudents />} />
-                <Route path="/admin/manage-attendance" element={<AdminManageAttendance />} />
+                <Route path="/admin/manage-attendance" element={<AdminManageAttendance />} /> 
+                <Route path="/admin/AdminProfile" element={<AdminProfile />} /> 
                 <Route path="/home" element={<UserHome />} />
                 <Route path="/profile" element={<UserProfile />} />
             </Routes>
