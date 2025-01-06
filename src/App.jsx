@@ -10,7 +10,9 @@ import AdminProfile from "./pages/AdminProfile";
 import UserHome from "./pages/UserHome";
 import UserProfile from "./pages/UserProfile";
 import Register from "./pages/Register/register";
+import StudentList from "./components/StudentList";
 import firebase from './config/firebase/index';
+
 
 console.log('config firebase ==> ', firebase);
 
