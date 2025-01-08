@@ -9,6 +9,8 @@ import AdminManageAttendance from "./pages/AdminManageAttendance";
 import AdminProfile from "./pages/AdminProfile"; 
 import UserHome from "./pages/UserHome";
 import UserProfile from "./pages/UserProfile";
+import UserAttendance from "./pages/UserAttendance";
+import UserHistory from "./pages/UserHistory";
 import Register from "./pages/Register/register";
 import StudentList from "./components/StudentList";
 import firebase from './config/firebase/index';
@@ -38,6 +40,8 @@ const App = () => {
                 <Route path="/admin/AdminProfile" element={<AdminProfile />} /> 
                 <Route path="/home" element={<UserHome />} />
                 <Route path="/profile" element={<UserProfile />} />
+                <Route path="/attendance" element={<UserAttendance />} />
+                <Route path="/history" element={<UserHistory />} />
             </Routes>
         </Router>
     );

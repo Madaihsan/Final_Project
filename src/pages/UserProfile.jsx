@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NavbarUser from "../components/NavbarUser";
 
 const UserProfile = () => {
@@ -8,11 +8,21 @@ const UserProfile = () => {
         email: "madaihsan123@gmail.com",
         phone: "087788652910",
         address: "Jl. Tanjakan",
+        photo: "", // Menambahkan state foto
     });
 
     // State untuk mengedit data
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState(profile);
+
+    // Mengambil data dari localStorage saat pertama kali load
+    useEffect(() => {
+        const savedData = localStorage.getItem("userProfile");
+        if (savedData) {
+            setProfile(JSON.parse(savedData));
+            setFormData(JSON.parse(savedData));
+        }
+    }, []);
 
     // Handle perubahan input
     const handleChange = (e) => {
@@ -20,9 +30,24 @@ const UserProfile = () => {
         setFormData({ ...formData, [name]: value });
     };
 
+    // Mengubah foto profil
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const updatedData = { ...formData, photo: reader.result };
+                setFormData(updatedData);
+                localStorage.setItem("userProfile", JSON.stringify(updatedData)); // Simpan ke localStorage
+            };
+            reader.readAsDataURL(file); // Baca file sebagai base64
+        }
+    };
+
     // Simpan perubahan
     const handleSave = () => {
         setProfile(formData);
+        localStorage.setItem("userProfile", JSON.stringify(formData)); // Simpan ke localStorage
         setIsEditing(false);
     };
 
@@ -40,7 +65,9 @@ const UserProfile = () => {
                 email: "",
                 phone: "",
                 address: "",
+                photo: "", // Reset foto juga
             });
+            localStorage.removeItem("userProfile"); // Hapus data dari localStorage
         }
     };
 
@@ -49,6 +76,31 @@ const UserProfile = () => {
             <NavbarUser />
             <div className="max-w-4xl mx-auto p-6 bg-gray-50 rounded-lg shadow-md">
                 <h1 className="text-3xl font-semibold text-center mb-6">Profil Pengguna</h1>
+
+                {/* Foto Profil */}
+                <div className="flex justify-center mb-6">
+                    <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-gray-300 shadow-lg transform hover:scale-105 transition-all duration-300">
+                        <img
+                            src={formData.photo || "/default-avatar.png"} // Foto default jika tidak ada foto
+                            alt="User Profile"
+                            className="w-full h-full object-cover"
+                        />
+                    </div>
+                </div>
+
+                {/* File Input untuk Mengubah Foto */}
+                {isEditing && (
+                    <div className="flex justify-center mb-6">
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleFileChange}
+                            className="text-sm text-gray-700"
+                        />
+                    </div>
+                )}
+
+                {/* Detail Profil */}
                 {isEditing ? (
                     <div className="bg-white p-6 rounded-lg shadow-lg space-y-6">
                         <h2 className="text-2xl font-semibold">Edit Profil</h2>
