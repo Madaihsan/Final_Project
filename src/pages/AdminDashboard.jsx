@@ -18,9 +18,9 @@ const AdminDashboard = () => {
 
                 // Simulate recent activities (replace with real API later)
                 setRecentActivities([
-                    { id: 1, activity: "Added a new student: John Doe", timestamp: "2025-01-07 10:00 AM" },
+                    { id: 1, activity: "Added a new student: Mada Ihsan", timestamp: "2025-01-07 10:00 AM" },
                     { id: 2, activity: "Updated class schedule", timestamp: "2025-01-06 3:00 PM" },
-                    { id: 3, activity: "Deleted student: Jane Smith", timestamp: "2025-01-05 1:30 PM" },
+                    { id: 3, activity: "Deleted student: Agus Sad", timestamp: "2025-01-05 1:30 PM" },
                 ]);
 
                 // Simulate announcements (replace with real API later)
